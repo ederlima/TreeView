@@ -1,0 +1,122 @@
+<h1>TreeView </h1>
+<p>A Classe TreeView, primeira parte do pacote <strong>br.ederlima.ui</strong> tem como funcao criar uma TreeView atraves de um XML devidamente configurado e gerenciar eventos e estilos visuais para cada item da TreeView. </p>
+<p><strong>A Classe permite personalizar:</strong>
+<ul>
+  <li>Largura</li>
+  <li>Altura</li>
+  <li>Estilos para Itens (cor de fundo, formato do texto, cor de foco)</li>
+  <li>Estilos para os Itens do tipo Folder (pastas)</li>
+  <li>Eventos para over, out e click tanto para Itens quanto para Itens do tipo Folder</li>
+</ul>
+<h2>Como Utilizar: </h2>
+<h3><strong>Formato do XML</strong></h3>
+<blockquote>
+  </p>
+  <p>&lt;data&gt;<br />
+    &lt;item name=&quot;Rotulo para o Item&quot; id=&quot;identificador unico&quot; primaryValue=&quot;valor primario&quot; secondaryValue=&quot;valor secundario&quot;&gt;<br />
+    &lt;/item&gt;<br />
+    &lt;/data&gt; 
+</blockquote>
+</p>
+<p>Varios itens podem ser aninhados &lt;item&gt;&lt;item&gt;&lt;/item&gt;&lt;/item&gt; transformando automaticamente Itens em Itens Folder, infinitamente.
+<h3><strong>Instanciado a Classe TreeView</strong></h3>
+<h4><strong>Primeiros passos:</strong></h4>
+<ol>
+  <li>Certifique-se do pacote br.ederlima.ui estar configurado no ClassPath do Flash ou que a pasta &quot;com&quot; esteja no mesmo diretorio que o Fla do arquivo;</li>
+  <li>Arraste um componente &quot;ScrollPane&quot; para a biblioteca do Flash (nao e necessario sua presencao no palco, ele e utilizado pela TreeView para criar a rolagem para os itens)</li>
+</ol>
+<h4>Importando e Instanciando a Classe, importando as Classes de Eventos e iniciando uma TreeView padrao:</h4>
+Neste exemplo estamos criando uma TreeView onde o clique sobre o Item dispara um &quot;trace&quot; na tela informando os dois valores (primaryValue e secondaryValue)<br />
+<blockquote>
+  </p>
+  <p>importando as Classes TreeView e TreeItemEvent<br />
+    import br.ederlima.ui.TreeView;<br />
+    import br.ederlima.ui.events.TreeItemEvent; </p>
+  <p>Criando o objeto XML que serve de dataProvider para a TreeView<br />
+    var dataProvider:XML = <br />
+    &lt;data&gt;<br />
+    &lt;item name=&quot;Rotulo para o Item&quot; id=&quot;identificador unico&quot; primaryValue=&quot;valor primario&quot; secondaryValue=&quot;valor secundario&quot;&gt;<br />
+    &lt;/item&gt;<br />
+    &lt;/data&gt;; </p>
+  <p>criando a instancia da Treeview<br />
+    var myTree:TreeView = new TreeView();<br />
+    informando o XML como dataProvider <br />
+    myTree.dataProvider = dataProvider;<br />
+    Adicionando um ouvinte para responder ao click sobre cada item <br />
+    myTree.addEventListener(TreeItemEvent.CLICK, itemClickHandler);<br />
+    iniciando a treeview adicionando-a ao palco <br />
+    addChild(myTree); </p>
+  <p>funcao que responde ao click sobre o item<br />
+    function itemClickHandler(event:TreeItemEvent):void<br />
+    {<br />
+    trace(event.currentItem.primaryValue, event.currentItem.secondaryValue); <br />
+    } 
+</blockquote>
+<h1>Personalizando a TreeView</h1>
+</p>
+<p>Para personalizar a visualizacao da TreeView e seus itens, utilize as propriedades:
+<ul>
+  <li>listStyle (Objeto ListItemStyle) - Para personalizar os itens clicaveis</li>
+  <li>folderStyle (Objeto FolderItemStyle) - Para personalizar os itens do tipo Folder</li>
+</ul>
+</p>
+<p><strong>O que posso personalizar?</strong> </p>
+<p>O componente TreeView permite personalizar:
+<ul>
+  <li>Fonte (Familia, estilo, cor, tamanho, etc) - Usando um objeto do tipo TextFormat</li>
+  <li>Cor de fundo - Modifica a cor de fundo do item visualizado, usando cores hexadecimais, ex: &quot;EAEAEA&quot;</li>
+  <li>Cor de foco - Modifica a cor de fundo do item visualizado, quando selecionado.</li>
+  <li>icones (icone unico para item e dois icones para folder, diferenciando os estados aberto e fechado)</li>
+</ul>
+</p>
+<p><strong>Como personalizar?</strong> </p>
+<p>Crie os objetos ListItemStyle e FolderItemStyle e anexe-os as propriedades da TreeView, desta forma:
+<blockquote>
+  </p>
+  <p>importando as Classes TreeView, TreeItemEvent, TreeViewEvent, <strong>ListItemStyle</strong> e <strong>FolderItemStyle</strong><br />
+    import br.ederlima.ui.TreeView;<br />
+    import br.ederlima.ui.TreeItemEvent;<br />
+    import br.ederlima.ui.TreeViewEvent;<br />
+    import br.ederlima.ui.styles.ListItemStyle;<br />
+    import br.ederlima.ui.styles.FolderItemStyle; </p>
+  <p> Criando o objeto XML que serve de dataProvider para a TreeView<br />
+    var dataProvider:XML = <br />
+    &lt;data&gt;<br />
+    &lt;item name=&quot;Rotulo para o Item&quot; id=&quot;identificador unico&quot; primaryValue=&quot;valor primario&quot; secondaryValue=&quot;valor secundario&quot;&gt;<br />
+    &lt;/item&gt;<br />
+    &lt;/data&gt;; </p>
+  <p>criando a instancia da Treeview<br />
+    var myTree:TreeView = new TreeView();<br />
+    informando o XML como dataProvider <br />
+    myTree.dataProvider = dataProvider;<br />
+    personalizando a visualizacao de um item usando a Classe ListItemStyle<br />
+    <br />
+    Para personalizar os icones dos itens, utilize uma instancia de um MovieClip<br />
+    na biblioteca, no palco ou uma Classe propria que desejar<br />
+    (No exemplo, anexo um movieclip da bibliteca com o linkage &quot;IconItem&quot;)<br />
+    <br />
+    myTree.itemStyle  = new ListItemStyle(new TextFormat(&quot;Arial&quot;, &quot;11&quot;, 0x666666), &quot;EAEAEA&quot;, &quot;E4E4E4&quot;, new IconItem()); <br />
+    personalizando a visualizacao de um item do tipo Folder usando a Classe FolderItemStyle <br />
+    <br />
+    Repare que o objeto FolderItemStyle possui opcao de dois icones <br />
+    para personalizar a ilustracao de pastas abertas e fechadas<br />
+    <br />
+    myTree.folderStyle = new
+    FolderItemStyle(new TextFormat(&quot;Arial&quot;, &quot;11&quot;, 0x000000, &quot;FFCC00&quot;, &quot;FFCC99&quot;, new IconFolderClosed(), new IconFolderOpen()));<br />
+    Adicionando um ouvinte para responder ao click sobre cada item <br />
+    myTree.addEventListener(TreeItemEvent.CLICK, itemClickHandler);<br />
+    iniciando a treeview adicionando-a ao palco <br />
+    addChild(myTree); </p>
+  <p>funcao que responde ao click sobre o item<br />
+    function itemClickHandler(event:TreeItemEvent):void<br />
+    {<br />
+    trace(event.currentItem.primaryValue, event.currentItem.secondaryValue); <br />
+    } 
+</blockquote>
+</p>
+<p>A documentacao oferece a descricao das propriedades de cada item da Classe TreeView, oferecendo a possibilidade de um maior aproveitamento da Classe, consulte. </p>
+<p><strong>Dados do Autor</strong><br />
+  Eder Lima<br />
+  Front-end Developer <br />
+  http:www.ederlima.com.br<br />
+  eder@ederlima.com.br </p>
