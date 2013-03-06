@@ -17,6 +17,7 @@ package
 	import flash.net.URLRequest;
 	import br.ederlima.ui.styles.ListItemStyle;
 	import flash.text.TextFormat;
+	import flash.ui.Mouse;
 	//import com.greensock.TweenLite;
 	/*import com.greensock.plugins.TweenPlugin;
 	import com.greensock.plugins.TintPlugin;
@@ -65,8 +66,12 @@ package
 			addChild(tree);
 			
 			bb.addEventListener(MouseEvent.CLICK, onStageClick);
+			bc.addEventListener(MouseEvent.CLICK, expandAll);
 		}
-		
+		private function expandAll(event:MouseEvent):void
+		{
+			tree.expandAll();
+		}
 		private function onSearchError(event:TreeViewEvent):void 
 		{
 			trace("Não existe");

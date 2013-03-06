@@ -67,6 +67,20 @@ package br.ederlima.ui
 				this.dispatchEvent(new TreeViewEvent(TreeViewEvent.SEARCH_ERROR, null));
 			}
 		}
+		public function expandAll():void
+		{
+			var _root:List = _treeContainer.getChildByName("listItensContainer") as List;
+			
+			
+		}
+		public function collapseAll():void
+		{
+			
+		}
+		private function openList(list:List):void
+		{
+			
+		}
 		private function initList(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, initList);
@@ -173,12 +187,11 @@ package br.ederlima.ui
 				case (ListItemType.TYPE_FOLDER) : 
 				if (event.currentItem.state == ListItemState.OPEN)
 				{
-					event.currentItem.containerList.y = event.currentItem.height;
-					event.currentItem.addChild(event.currentItem.containerList);
+					openItem(event.currentItem);
 				}
 				else
 				{
-					event.currentItem.removeChild(event.currentItem.containerList);
+					closeItem(event.currentItem);
 				}
 				dispatchEvent(new TreeItemEvent(TreeItemEvent.FOLDER_CLICK, event.currentItem));
 				break;
@@ -189,6 +202,15 @@ package br.ederlima.ui
 				
 			}
 			this.dispatchEvent(new ListEvent(ListEvent.LIST_OPEN));
+		}
+		private function openItem(item:ListItem):void
+		{
+			item.containerList.y = item.height;
+			item.addChild(item.containerList);
+		}
+		private function closeItem(item:ListItem):void
+		{
+			item.removeChild(item.containerList);
 		}
 		private function itemOutHandler(event:ListItemEvent):void 
 		{
@@ -246,6 +268,7 @@ package br.ederlima.ui
 				}
 			}
 		}
+		
 		/**
 		 * DataProvider da Treeview
 		 * Objeto XML com os dados para a TreeView
@@ -328,12 +351,12 @@ package br.ederlima.ui
 		/**
 		 * ScrollPane da TreeView
 		 */
-		public function get ScrollPane():ScrollPane { return pane; }
+		public function get scrollPane():ScrollPane { return pane; }
 		
-		/*public function set ScrollPane(value:ScrollPane):void 
+		public function set scrollPane(value:ScrollPane):void 
 		{
 			pane = value;
-		}*/
+		}
 
 		
 	}
