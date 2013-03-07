@@ -16,6 +16,7 @@ package br.ederlima.ui
 	import br.ederlima.ui.events.ListItemEvent;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getDefinitionByName;
 	import fl.containers.ScrollPane;
@@ -67,18 +68,61 @@ package br.ederlima.ui
 				this.dispatchEvent(new TreeViewEvent(TreeViewEvent.SEARCH_ERROR, null));
 			}
 		}
+		/**
+		 * Expande todos os itens da TreeView
+		 */
 		public function expandAll():void
 		{
 			var _root:List = _treeContainer.getChildByName("listItensContainer") as List;
-			
+			openList(_root);
 			
 		}
+		/**
+		 * Fecha todos os itens abertos da TreeView
+		 */
 		public function collapseAll():void
 		{
-			
+			var _root:List = _treeContainer.getChildByName("listItensContainer") as List;
+			closeList(_root);
+		}
+		private function closeList(list:List):void
+		{
+			for each(var item:ListItem in list.itens)
+			{
+				if (item.type == ListItemType.TYPE_FOLDER)
+				{
+					if (item.state == ListItemState.OPEN)
+					{
+						closeItem(item);
+					}
+					if (item.containerList != null)
+					{
+						closeList(item.containerList);
+					}
+					refreshTreeView(list);
+					pane.update();
+				}
+			}
 		}
 		private function openList(list:List):void
 		{
+			for each(var item:ListItem in list.itens)
+			{
+				if (item.type == ListItemType.TYPE_FOLDER)
+				{
+					if (item.state == ListItemState.CLOSED)
+					{
+						openItem(item);
+					}
+					
+					if (item.containerList != null)
+					{
+						openList(item.containerList);
+					}
+					refreshTreeView(list);
+					pane.update();
+				}
+			}
 			
 		}
 		private function initList(event:Event):void
@@ -207,10 +251,13 @@ package br.ederlima.ui
 		{
 			item.containerList.y = item.height;
 			item.addChild(item.containerList);
+			refreshTreeView(item.parentList);
+			item.state = ListItemState.OPEN;
 		}
 		private function closeItem(item:ListItem):void
 		{
 			item.removeChild(item.containerList);
+			item.state = ListItemState.CLOSED;
 		}
 		private function itemOutHandler(event:ListItemEvent):void 
 		{

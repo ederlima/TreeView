@@ -67,6 +67,12 @@ package
 			
 			bb.addEventListener(MouseEvent.CLICK, onStageClick);
 			bc.addEventListener(MouseEvent.CLICK, expandAll);
+			bd.addEventListener(MouseEvent.CLICK, collapseAll);
+		}
+		
+		private function collapseAll(e:MouseEvent):void 
+		{
+			tree.collapseAll();
 		}
 		private function expandAll(event:MouseEvent):void
 		{
